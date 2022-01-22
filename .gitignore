@@ -1,0 +1,30 @@
+.idea
+.vscode
+*~
+._*
+.~lock.*
+*.bkp
+*.log
+.buildpath
+.DS_Store
+.project
+.settings
+.environment
+.env.backup
+.phpunit.result.cache
+
+
+# Docker logs e configs
+/docker/nginx/log/*
+/docker/php/log/*
+/docker/postgres/volume/*
+
+
+# Coverage results and execution report
+!/target/integration/report.xml
+!/target/unit/report.xml
+
+# Dependencies
+/vendor/
+
+target

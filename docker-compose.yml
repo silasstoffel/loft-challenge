@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: 'app-php'
+    privileged: true
+    networks:
+      - loft-network
+    volumes:
+      - ./:/var/www
+      - ./docker/php/log:/var/log/php
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    container_name: 'app-nginx'
+    ports:
+      - '5555:80'
+    privileged: true
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/certs/certificate.crt:/etc/nginx/conf.d/certificate.crt
+      - ./docker/nginx/certs/certificate.key:/etc/nginx/conf.d/certificate.key
+      - ./docker/nginx/log:/var/log/nginx
+    networks:
+      - loft-network
+
+networks:
+  loft-network:
+    external: true
