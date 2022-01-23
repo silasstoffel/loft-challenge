@@ -9,13 +9,15 @@ use Illuminate\Http\Request;
 use Loft\Application\Game\UseCase\Character\Create;
 use Loft\Application\Game\UseCase\Character\CreateDTO;
 use Loft\Application\Game\UseCase\Character\LoadAll;
+use Loft\Application\Game\UseCase\Character\LoadOne;
 use Loft\Domain\Game\Entities\Character;
 
 class CharactersController extends Controller
 {
     public function __construct(
         private Create $createUseCase,
-        private LoadAll $loadAllUseCase
+        private LoadAll $loadAllUseCase,
+        private LoadOne $loadOneUseCase
     ) {
     }
 
@@ -36,14 +38,27 @@ class CharactersController extends Controller
         /** @var Character $results */
         foreach ($results as $result) {
             $items[] = [
-                'id'   => $result->id,
-                'name' => $result->name,
-                'role' => $result->roleName,
+                'id'     => $result->id,
+                'name'   => $result->name,
+                'role'   => $result->roleName,
                 'status' => $result->getStatus(),
             ];
         }
 
         return $this->toJsonResponse($items);
+    }
+
+    public function get(string $id): JsonResponse
+    {
+        $character = $this->loadOneUseCase->execute($id);
+        if (is_null($character)) {
+            return $this->toJsonResponse(
+                ['message' => 'Entity not found.'],
+                404
+            );
+        }
+
+        return $this->toJsonResponse($character->toArray());
     }
 
 }

@@ -36,7 +36,11 @@ class CharacterRepository implements CharacterRepositoryInterface
             fn($character) => $character['id'] === $id
         ));
 
-        return $item['id'] ? Character::fromArray($item) : null;
+        if (isset($item[0])) {
+            return $this->createCharacterFromArray($item[0]);
+        }
+
+        return null;
     }
 
     public function findByName(string $name): ?Character
@@ -62,17 +66,22 @@ class CharacterRepository implements CharacterRepositoryInterface
         $data    = [];
 
         foreach ($results as $result) {
-            $attack           = $result['attack'];
-            $modifier         = FightModifier::fromArray($attack);
-            $result['attack'] = $modifier;
-
-            $velocity           = $result['velocity'];
-            $modifier           = FightModifier::fromArray($velocity);
-            $result['velocity'] = $modifier;
-
-            $data[] = Character::fromArray($result);
+            $data[] = $this->createCharacterFromArray($result);
         }
 
-        return  $data;
+        return $data;
+    }
+
+    private function createCharacterFromArray(array $result): Character
+    {
+        $attack           = $result['attack'];
+        $modifier         = FightModifier::fromArray($attack);
+        $result['attack'] = $modifier;
+
+        $velocity           = $result['velocity'];
+        $modifier           = FightModifier::fromArray($velocity);
+        $result['velocity'] = $modifier;
+
+        return Character::fromArray($result);
     }
 }
