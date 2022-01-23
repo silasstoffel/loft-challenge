@@ -59,11 +59,11 @@ class CharacterRoleRepository implements CharacterRoleRepositoryInterface
 
     public function findById(string $id): ?CharacterRole
     {
-        $item = current(
-            array_filter(self::$items, fn($item) => $item->id === $item)
+        $item = array_values(
+            array_filter(self::$items, fn($item) => $item->id === $id)
         );
 
-        return $item ?? null;
+        return $item[0] ?? null;
     }
 
     public function create(CharacterRole $characterRole)

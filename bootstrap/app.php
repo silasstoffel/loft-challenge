@@ -1,6 +1,7 @@
 <?php
 
 use App\Providers\Dependencies\Domain\DomainServiceProvider;
+use App\Providers\Dependencies\Infra\InfraServiceProvider;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -97,6 +98,7 @@ $app->configure('app');
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(DomainServiceProvider::class);
+$app->register(InfraServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
