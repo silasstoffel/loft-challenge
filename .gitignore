@@ -12,6 +12,7 @@
 .environment
 .env.backup
 .phpunit.result.cache
+.env
 
 
 # Docker logs e configs
