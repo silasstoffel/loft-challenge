@@ -11,7 +11,14 @@ class Character
     public function __construct(
         public readonly string $id,
         string $name,
-        public readonly string $roleId
+        public readonly string $roleId,
+        public readonly string $roleName,
+        public readonly int $lifePoints,
+        public readonly int $strenght,
+        public readonly int $inteligence,
+        public readonly int $dexterity,
+        public readonly FightModifier $attack,
+        public readonly FightModifier $velocity,
     ) {
         self::checkName($name);
         $this->name = $name;
@@ -37,9 +44,16 @@ class Character
     public static function fromArray(array $data): self
     {
         $default = [
-            'id'   => null,
-            'name' => null,
-            'role' => null,
+            'id'          => null,
+            'name'        => null,
+            'roleId'      => null,
+            'roleName'    => null,
+            'lifePoints'  => null,
+            'strenght'    => null,
+            'inteligence' => null,
+            'dexterity'   => null,
+            'attack'      => null,
+            'velocity'    => null,
         ];
 
         $item = array_merge($default, $data);
@@ -48,15 +62,29 @@ class Character
             $item['id'],
             $item['name'],
             $item['roleId'],
+            $item['roleName'],
+            $item['lifePoints'],
+            $item['strenght'],
+            $item['inteligence'],
+            $item['dexterity'],
+            $item['attack'],
+            $item['velocity'],
         );
     }
 
     public function toArray(): array
     {
         return [
-            'id'     => $this->id,
-            'name'   => $this->name,
-            'roleId' => $this->roleId,
+            'id'          => $this->id,
+            'name'        => $this->name,
+            'roleId'      => $this->roleId,
+            'roleName'    => $this->roleName,
+            'lifePoints'  => $this->lifePoints,
+            'strenght'    => $this->strenght,
+            'inteligence' => $this->inteligence,
+            'dexterity'   => $this->dexterity,
+            'attack'      => $this->attack->toArray(),
+            'velocity'    => $this->velocity->toArray(),
         ];
     }
 }
