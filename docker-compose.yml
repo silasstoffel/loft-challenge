@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
-    container_name: 'app-php'
+    container_name: 'loft-php'
     privileged: true
     networks:
       - loft-network
@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
-    container_name: 'app-nginx'
+    container_name: 'loft-nginx'
     ports:
       - '5555:80'
     privileged: true
@@ -29,6 +29,15 @@ services:
     networks:
       - loft-network
 
+  redis:
+    container_name: 'loft-redis'
+    hostname: redis
+    image: 'redis:alpine'
+    networks:
+      - default
+      - loft-network
+    ports:
+      - '5556:6379'
 networks:
   loft-network:
     external: true

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker exec -it app-php bash
+docker exec -it loft-php bash

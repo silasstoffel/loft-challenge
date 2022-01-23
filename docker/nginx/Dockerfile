@@ -2,7 +2,7 @@ FROM nginx:alpine
 
 ARG DEFAULT_PORT=80
 ARG SERVER_NAME=_
-ARG PHP_CONTAINER_HOST='app-php'
+ARG PHP_CONTAINER_HOST='loft-php'
 ARG PHP_CONTAINER_PORT=9000
 
 RUN apk add --no-cache sed
