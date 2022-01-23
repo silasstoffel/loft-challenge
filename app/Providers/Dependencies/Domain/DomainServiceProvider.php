@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers\Dependencies\Domain;
 
+use Loft\Domain\Game\Repositories\CharacterRoleRepositoryInterface;
 use Loft\Domain\Shared\PrimaryKey\PrimaryKeyCreatorInterface;
+use Loft\Infra\Domain\Game\Repositories\CharacterRoleRepository;
 use Loft\Infra\Shared\PrimaryKey\UUIDCreator;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +20,10 @@ final class DomainServiceProvider extends ServiceProvider
 
     public function repositories(): void
     {
-        //$this->app->bind(UserRepositoryInterface::class, fn() => new UserRepository());
+        $this->app->bind(
+            CharacterRoleRepositoryInterface::class,
+            fn() => new CharacterRoleRepository()
+        );
     }
 
     public function common(): void
