@@ -11,4 +11,9 @@ interface CharacterRepositoryInterface
     public function findById(string $id): ?Character;
 
     public function findByName(string $name): ?Character;
+
+    /**
+     * @return Character[]
+     */
+    public function findAll(): array;
 }

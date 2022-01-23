@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Loft\Infra\Domain\Game\Repositories;
 
+use Loft\Domain\Game\Entities\FightModifier;
 use Predis\Client;
 use Loft\Domain\Game\Entities\Character;
 use Loft\Domain\Game\Repositories\CharacterRepositoryInterface;
@@ -53,5 +54,25 @@ class CharacterRepository implements CharacterRepositoryInterface
     {
         $characters = $this->redis->get(self::KEY_ITEMS_CACHE);
         return $characters ? json_decode($characters, true, JSON_THROW_ON_ERROR) : [];
+    }
+
+    public function findAll(): array
+    {
+        $results = $this->getAll();
+        $data    = [];
+
+        foreach ($results as $result) {
+            $attack           = $result['attack'];
+            $modifier         = FightModifier::fromArray($attack);
+            $result['attack'] = $modifier;
+
+            $velocity           = $result['velocity'];
+            $modifier           = FightModifier::fromArray($velocity);
+            $result['velocity'] = $modifier;
+
+            $data[] = Character::fromArray($result);
+        }
+
+        return  $data;
     }
 }

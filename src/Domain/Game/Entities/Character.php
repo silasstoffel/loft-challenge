@@ -6,7 +6,11 @@ use InvalidArgumentException;
 
 class Character
 {
+    private const STATUS_ALIVE = 'Alive';
+    private const STATUS_DEAD  = 'Dead';
+
     public readonly string $name;
+    private string $status;
 
     public function __construct(
         public readonly string $id,
@@ -21,7 +25,8 @@ class Character
         public readonly FightModifier $velocity,
     ) {
         self::checkName($name);
-        $this->name = $name;
+        $this->name   = $name;
+        $this->status = self::STATUS_ALIVE;
     }
 
     private static function checkName($name)
@@ -86,5 +91,10 @@ class Character
             'attack'      => $this->attack->toArray(),
             'velocity'    => $this->velocity->toArray(),
         ];
+    }
+
+    public function getStatus(): string
+    {
+        return $this->lifePoints > 0 ? self::STATUS_ALIVE : self::STATUS_DEAD;
     }
 }
