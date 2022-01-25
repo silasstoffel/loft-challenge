@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Application\Game\UseCase\Fight;
+namespace Tests\Unit\Application\Game\UseCase\Fight;
 
 use Loft\Application\Game\UseCase\Fight\CreateFight;
 use Loft\Application\Game\UseCase\Fight\CreateFightOutput;
-use Tests\TestCase;
 use Loft\Domain\Game\Repositories\CharacterRepositoryInterface;
-use Tests\Application\Game\Mocks\CharacterRepositoryMock;
+use Tests\TestCase;
+use Tests\Unit\Application\Game\Mocks\CharacterRepositoryMock;
 
 class CreateFightTest extends TestCase
 {

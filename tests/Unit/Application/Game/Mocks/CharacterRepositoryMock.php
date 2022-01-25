@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Application\Game\Mocks;
+namespace Tests\Unit\Application\Game\Mocks;
 
 use Loft\Domain\Game\Entities\Character;
 use Loft\Domain\Game\Entities\CharacterBuilder;

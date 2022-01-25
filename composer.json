@@ -1,6 +1,6 @@
 {
-  "name": "laravel/lumen",
-  "description": "The Laravel Lumen Framework.",
+  "name": "loft/game-challenge",
+  "description": "The Game Challenge.",
   "keywords": [
     "framework",
     "laravel",
