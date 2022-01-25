@@ -39,7 +39,7 @@
 
 ## About
 
-Este projeto se baseia em uma API RESTful. A idéia do projeto é garantir que core do projeto que é game não seja fortemente acoplado ao framework,
+Este projeto se baseia em uma API RESTful. A idéia do projeto é garantir que core do projeto que é um game não seja fortemente acoplado ao framework,
 por isso foi optado por seguir alguns princípios de Clean Architecture. Foi escolhido o lumen como micro framework, a ideia é usar o mínimo possível
 do framewok ou implementar abstrações para facilitar uma possível troca no futuro. Do lumen estamos usando módulos de rotas, injeção de dependencia,
 handler de errors e seeders. Outro ponto importante é que toda regra de negócio é possível de ser testada através de suíte de testes unitário e de integração.
