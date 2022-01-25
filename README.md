@@ -37,7 +37,7 @@
 
 ## About
 
-Para entender de forma geral a aplicação assista esse curto [vídeo](https://www.loom.com/share/5ac503ba8dcc44fdaaed09f6ad83a6f8)
+Para entender de forma geral a aplicação assista esse curto [vídeo](https://www.loom.com/share/ce5ee94267fa47109f17b5e09fc10d40)
 
 ## Setup
 
