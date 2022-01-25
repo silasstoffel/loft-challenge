@@ -37,7 +37,7 @@
 
 ## About
 
-Para entender de forma geral a aplicação assista esse curto [vídeo]()
+Para entender de forma geral a aplicação assista esse curto [vídeo](https://www.loom.com/share/5ac503ba8dcc44fdaaed09f6ad83a6f8)
 
 ## Setup
 
@@ -83,4 +83,3 @@ Existem pelo menos três formas de rodar os testes, sendo:
 
 - Acessar o container do PHP e rodar `composer run tests`
 - Em ambiente com docker e docker-composer `./bin/exec-test.sh`
-- Instalação do php local pode usar esses comandos: `composer run tests` ou `./vendor/bin/phpunit --colors`
