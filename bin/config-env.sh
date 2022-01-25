@@ -20,3 +20,9 @@ echo "";
 #echo "Executando Migrations [finish]";
 
 echo ""
+
+echo "Executando Seeds [start]";
+docker container exec loft-php php artisan db:seed
+echo "Executando Seeds [finish]";
+
+echo ""
