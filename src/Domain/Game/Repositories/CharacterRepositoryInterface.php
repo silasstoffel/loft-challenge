@@ -16,4 +16,6 @@ interface CharacterRepositoryInterface
      * @return Character[]
      */
     public function findAll(): array;
+
+    public function updateLifePoints(string $characterId, int $points): void;
 }

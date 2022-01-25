@@ -12,12 +12,17 @@ class Character
     public readonly string $name;
     private string $status;
 
+    private int $calculatedVelocity = 0;
+    private int $calculatedAttack = 0;
+
+    private int $lifePoints;
+
     public function __construct(
         public readonly string $id,
         string $name,
         public readonly string $roleId,
         public readonly string $roleName,
-        public readonly int $lifePoints,
+        int $lifePoints,
         public readonly int $strenght,
         public readonly int $inteligence,
         public readonly int $dexterity,
@@ -25,8 +30,14 @@ class Character
         public readonly FightModifier $velocity,
     ) {
         self::checkName($name);
-        $this->name   = $name;
-        $this->status = self::STATUS_ALIVE;
+
+        if ($lifePoints < 0) {
+            throw new \InvalidArgumentException('Life points should be more than or equal 0.');
+        }
+
+        $this->name       = $name;
+        $this->status     = $lifePoints > 0 ? self::STATUS_ALIVE : self::STATUS_DEAD;
+        $this->lifePoints = $lifePoints;
     }
 
     private static function checkName($name)
@@ -77,9 +88,9 @@ class Character
         );
     }
 
-    public function toArray(): array
+    public function toArray($showStatus = false): array
     {
-        return [
+        $character = [
             'id'          => $this->id,
             'name'        => $this->name,
             'roleId'      => $this->roleId,
@@ -91,10 +102,103 @@ class Character
             'attack'      => $this->attack->toArray(),
             'velocity'    => $this->velocity->toArray(),
         ];
+
+        if ($showStatus) {
+            $character['status'] = $this->status;
+        }
+
+        return $character;
     }
 
     public function getStatus(): string
     {
         return $this->lifePoints > 0 ? self::STATUS_ALIVE : self::STATUS_DEAD;
+    }
+
+    public function calculateVelocity(): int
+    {
+        $value = $this->calculate($this->velocity);
+
+        $this->calculatedVelocity = $value;
+
+        return $value;
+    }
+
+    private function calculateAttack(): int
+    {
+        $value = $this->calculate($this->attack);
+
+        $this->calculatedAttack = $value;
+
+        return $value;
+    }
+
+    private function calculate(FightModifier $modifier): int
+    {
+        $base = 0;
+
+        if ($modifier->dexterityPercent > 0) {
+            $base += intval($this->dexterity / 100 * $modifier->dexterityPercent);
+        }
+
+        if ($modifier->inteligencePercent > 0) {
+            $base += intval($this->inteligence / 100 * $modifier->inteligencePercent);
+        }
+
+        if ($modifier->strenghtPercent > 0) {
+            $base += intval($this->strenght / 100 * $modifier->strenghtPercent);
+        }
+
+        return rand(0, $base);
+    }
+
+    public function getLifePoints(): int
+    {
+        return $this->lifePoints;
+    }
+
+    public function getCalculateAttack(): int
+    {
+        return $this->calculatedAttack;
+    }
+
+    public function getCalculateVelocity(): int
+    {
+        return $this->calculatedVelocity;
+    }
+
+    public function receiveAttack(Character $characterAttack)
+    {
+        $pointsBeforeAttack = $this->lifePoints;
+        $pointsAttack       = $characterAttack->calculateAttack();
+
+        $this->removeLifePoints($pointsAttack);
+
+        return [
+            'attacker' => [
+                'name'         => $characterAttack->name,
+                'points'       => $characterAttack->lifePoints,
+                'attackPoints' => $pointsAttack,
+            ],
+            'defender' => [
+                'name'               => $this->name,
+                'pointsBeforeAttack' => $pointsBeforeAttack,
+                'points'             => $this->lifePoints,
+            ],
+        ];
+    }
+
+    public function canReceiveAttack(): bool
+    {
+        return $this->lifePoints > 0;
+    }
+
+    private function removeLifePoints(int $points)
+    {
+        $this->lifePoints -= $points;
+        if ($this->lifePoints <= 0) {
+            $this->status     = self::STATUS_DEAD;
+            $this->lifePoints = 0;
+        }
     }
 }

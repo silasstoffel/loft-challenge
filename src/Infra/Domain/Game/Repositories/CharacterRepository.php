@@ -51,7 +51,11 @@ class CharacterRepository implements CharacterRepositoryInterface
             fn($character) => $character['name'] === $name
         ));
 
-        return isset($item[0]['id']) ? Character::fromArray($item[0]) : null;
+        if (isset($item[0])) {
+            return $this->createCharacterFromArray($item[0]);
+        }
+
+        return null;
     }
 
     private function getAll(): array
@@ -83,5 +87,18 @@ class CharacterRepository implements CharacterRepositoryInterface
         $result['velocity'] = $modifier;
 
         return Character::fromArray($result);
+    }
+
+    public function updateLifePoints(string $characterId, int $points): void
+    {
+        $characters = $this->getAll();
+        foreach ($characters as $key => $character) {
+            if ($character['id'] === $characterId) {
+                $characters[$key]['lifePoints'] = $points;
+                break;
+            }
+        }
+
+        $this->redis->set(self::KEY_ITEMS_CACHE, json_encode($characters));
     }
 }

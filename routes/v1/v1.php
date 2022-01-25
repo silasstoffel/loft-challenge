@@ -9,7 +9,8 @@ $v1 = [
 
 $routes = [
     '/routes/v1/character-roles.php',
-    '/routes/v1/characters.php'
+    '/routes/v1/characters.php',
+    '/routes/v1/fights.php'
 ];
 
 $dir = dirname(__DIR__, 2);

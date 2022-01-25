@@ -10,7 +10,7 @@ class CustomErrorHandler extends Handler
 {
     private array $mapExceptionToHttpCode = [
         \InvalidArgumentException::class => 422,
-        \DomainException::class          => 400,
+        \DomainException::class          => 422,
     ];
 
     public function render($request, Throwable $e): Response|JsonResponse
@@ -32,6 +32,11 @@ class CustomErrorHandler extends Handler
 
         if ($status === 404) {
             $response['message'] = 'Page not found.';
+        }
+
+        $envs = ['local', 'development'];
+        if ($status === 500 && in_array(env('APP_ENV'), $envs)) {
+            $response['trace'] = $e->getTraceAsString();
         }
 
         return new JsonResponse($response, $status, $headers, $options);
