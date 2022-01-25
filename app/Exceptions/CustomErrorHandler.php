@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class CustomErrorHandler extends Handler
@@ -11,6 +12,7 @@ class CustomErrorHandler extends Handler
     private array $mapExceptionToHttpCode = [
         \InvalidArgumentException::class => 422,
         \DomainException::class          => 422,
+        NotFoundHttpException::class     => 404,
     ];
 
     public function render($request, Throwable $e): Response|JsonResponse
@@ -31,7 +33,7 @@ class CustomErrorHandler extends Handler
         $options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
         if ($status === 404) {
-            $response['message'] = 'Page not found.';
+            $response['message'] = 'Resource not found.';
         }
 
         $envs = ['local', 'development'];
