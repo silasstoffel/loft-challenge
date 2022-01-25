@@ -34,10 +34,20 @@
 # Requirements
  - [Docker](https://www.docker.com/)
  - [Docker Compose](https://docs.docker.com/compose)
+ - PHP 8.1 (já está instalado no container)
+ - Composer (já está instalado no container)
 
 ## About
 
-Para entender de forma geral a aplicação assista esse curto [vídeo](https://www.loom.com/share/ce5ee94267fa47109f17b5e09fc10d40)
+Este projeto se baseia em uma API RESTful. A idéia do projeto é garantir que core do projeto que é game não seja fortemente acoplado ao framework,
+por isso foi optado por seguir alguns princípios de Clean Architecture. Foi escolhido o lumen como micro framework, a ideia é usar o mínimo possível
+do framewok ou implementar abstrações para facilitar uma possível troca no futuro. Do lumen estamos usando módulos de rotas, injeção de dependencia,
+handler de errors e seeders. Outro ponto importante é que toda regra de negócio é possível de ser testada através de suíte de testes unitário e de integração.
+
+Seguindo o processo de setup por completo, serão criados dois personagens inicialmente, um chamado de php_app (warrior) e node_app (Mage), acredito que assim
+já é possível testar os endpoints e ver algum resultado.
+
+Para entender estrutura e organização da aplicação assista esse curto [vídeo](https://www.loom.com/share/ce5ee94267fa47109f17b5e09fc10d40).
 
 ## Setup
 
@@ -53,11 +63,32 @@ $ sh ./bin/config-env.sh
 ```
 Executando os dois scripts, seu ambiente estará configurado para rodar a aplicação em desenvolvimento.
 
+Caso queira fazer a setup manualmente, siga estes passos:
+
+```shell
+# cria rede
+$ docker network create loft-network
+
+# cria containers php, nginx e redis
+$ docker-compose up -d
+
+# instala dependências do projeto (framework + lib)
+$ docker container exec loft-php composer install
+
+# aplica permissões requeridas pelo framework
+$ docker container exec loft-php chown -Rf www-data:www-data ./storage
+
+# criar os personagens iniciais
+docker container exec loft-php php artisan db:seed
+
+```
+
+
 ## Accessing the API
 
 Acesse: http://localhost:5555.
 
-Documentação da API: http://localhost:5555/docs
+Documentação da API: http://localhost:5555/docs, você encontra no swagger todos os endpoints com os schemas de requests e responses.
 
 ![image info](./resources/img/swagger1.png)
 
