@@ -2,21 +2,21 @@
 
 /**
  * @OA\Post(
- *     path="/v1/users",
- *     summary="Criar usuário",
- *     description="Cadastra um usuário",
- *     tags={"Users"},
+ *     path="/v1/fights",
+ *     summary="Cria uma batalha",
+ *     description="Cria uma batalha entre dois participantes",
+ *     tags={"Fights"},
  *
  *     @OA\RequestBody(
- *         description="Cadastra um usuario",
+ *         description="Informe os personagens",
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/UserPayload")
+ *         @OA\JsonContent(ref="#/components/schemas/CreateFightRequest")
  *     ),
  *
  *     @OA\Response(
- *       response="201",
- *       description="Cadastro efetivado com sucesso.",
- *       @OA\JsonContent(ref="#/components/schemas/User")
+ *       response="200",
+ *       description="Batalha encerrada com sucesso",
+ *       @OA\JsonContent(ref="#/components/schemas/CreateFightResponse")
  *     ),
  *
  *     @OA\Response(
@@ -29,6 +29,6 @@
  *       response="422",
  *       description="Validação de uma ação disparada pelo consumidor",
  *       @OA\JsonContent(ref="#/components/schemas/Error")
- *     ),
+ *     )
  * )
  */

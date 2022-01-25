@@ -2,10 +2,10 @@
 
 /**
  * @OA\Get(
- *     path="/v1/users/{id}",
- *     summary="Carrega um usuário",
- *     description="Carrega dados de um usuário pelo ID",
- *     tags={"Users"},
+ *     path="/v1/characters/{id}",
+ *     summary="Carrega um personagem",
+ *     description="Carrega dados de um personagem pelo ID",
+ *     tags={"Characters"},
  *
  *     @OA\Parameter(
  *         description="ID",
@@ -20,7 +20,7 @@
  *     @OA\Response(
  *       response="200",
  *       description="Cadastro encontrado sucesso",
- *       @OA\JsonContent(ref="#/components/schemas/User")
+ *       @OA\JsonContent(ref="#/components/schemas/Character")
  *     ),
  *
  *     @OA\Response(

@@ -1,25 +1,62 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Empiricus - User API",
-        "description": "Documentação do micro serviço de usuários.",
+        "title": "Loft - Game Challenge API",
+        "description": "Documentação dos recursos da API.",
         "version": "0.0.1"
     },
     "paths": {
-        "/v1/users": {
+        "/v1/character-roles": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Character Roles"
                 ],
-                "summary": "Carrega uma lista de usuários",
-                "description": "Carrega lista de usuários disponíveis",
+                "summary": "Lista de papeis (profissão) dos personagens",
+                "description": "Carrega uma lista de papeis (profissão) dos personagens",
                 "responses": {
                     "200": {
-                        "description": "Lista de usuários encontrada",
+                        "description": "Lista de papeis (profissão) dos personagens encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CharacterRole"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de uma ação disparada pelo consumidor",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/characters": {
+            "get": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Lista dos personagens",
+                "description": "Carrega uma lista dos personagens",
+                "responses": {
+                    "200": {
+                        "description": "Lista dos personagens encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CharacterResponseLoadAll"
+                                    }
                                 }
                             }
                         }
@@ -38,17 +75,17 @@
             },
             "post": {
                 "tags": [
-                    "Users"
+                    "Characters"
                 ],
-                "summary": "Criar usuário",
-                "description": "Cadastra um usuário",
+                "summary": "Cria um personagem",
+                "description": "Cria um usuário",
                 "requestBody": {
-                    "description": "Cadastra um usuario",
+                    "description": "Cadastra um personagem",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserPayload"
+                                "$ref": "#/components/schemas/CreateCharactersRequest"
                             }
                         }
                     }
@@ -59,56 +96,13 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "$ref": "#/components/schemas/Character"
                                 }
                             }
                         }
                     },
                     "400": {
                         "description": "Erro de uma ação disparada pelo consumidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validação de uma ação disparada pelo consumidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Deleta todos usuários",
-                "description": "Deleta todos usuários",
-                "requestBody": {
-                    "description": "Corpo para deletar todos usuarios",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserDeleteAllPayload"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "204": {
-                        "description": "Usuários deletados com sucesso."
-                    },
-                    "400": {
-                        "description": "Erro de uma ação disparada pelo consumidor.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -130,13 +124,13 @@
                 }
             }
         },
-        "/v1/users/{id}": {
+        "/v1/characters/{id}": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Characters"
                 ],
-                "summary": "Carrega um usuário",
-                "description": "Carrega dados de um usuário pelo ID",
+                "summary": "Carrega um personagem",
+                "description": "Carrega dados de um personagem pelo ID",
                 "parameters": [
                     {
                         "name": "id",
@@ -154,7 +148,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "$ref": "#/components/schemas/Character"
                                 }
                             }
                         }
@@ -170,84 +164,39 @@
                         }
                     }
                 }
-            },
-            "put": {
+            }
+        },
+        "/v1/fights": {
+            "post": {
                 "tags": [
-                    "Users"
+                    "Fights"
                 ],
-                "summary": "Atualiza um usuário",
-                "description": "Atualiza um usuário",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Cria uma batalha",
+                "description": "Cria uma batalha entre dois participantes",
                 "requestBody": {
-                    "description": "Atributos para atualização do usuário",
+                    "description": "Informe os personagens",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserPayload"
+                                "$ref": "#/components/schemas/CreateFightRequest"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "204": {
-                        "description": "Usuário atualizado com sucesso."
-                    },
-                    "400": {
-                        "description": "Erro de uma ação disparada pelo consumidor.",
+                    "200": {
+                        "description": "Batalha encerrada com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Error"
+                                    "$ref": "#/components/schemas/CreateFightResponse"
                                 }
                             }
                         }
                     },
-                    "422": {
-                        "description": "Validação de uma ação disparada pelo consumidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Deleta um usuário",
-                "description": "Deleta um usuário",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Usuário deletado com sucesso."
-                    },
                     "400": {
-                        "description": "Erro de uma ação disparada pelo consumidor.",
+                        "description": "Erro de uma ação disparada pelo consumidor",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -272,6 +221,106 @@
     },
     "components": {
         "schemas": {
+            "CharacterRole": {
+                "title": "CharacterRole",
+                "required": [
+                    "name",
+                    "id",
+                    "lifePoints",
+                    "strenght",
+                    "inteligence"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Nome",
+                        "type": "string"
+                    },
+                    "lifePoints": {
+                        "description": "Pontos de vida",
+                        "type": "number"
+                    },
+                    "strenght": {
+                        "description": "Força",
+                        "type": "number"
+                    },
+                    "inteligence": {
+                        "description": "Inteligencia",
+                        "type": "number"
+                    },
+                    "dexterity": {
+                        "description": "Destreza",
+                        "type": "number"
+                    },
+                    "attack": {
+                        "$ref": "#/components/schemas/FightModifier",
+                        "description": "Modificador de ataque"
+                    },
+                    "velocity": {
+                        "$ref": "#/components/schemas/FightModifier"
+                    }
+                },
+                "type": "object"
+            },
+            "Character": {
+                "title": "Character",
+                "required": [
+                    "name",
+                    "id",
+                    "lifePoints",
+                    "strenght",
+                    "inteligence"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Nome",
+                        "type": "string"
+                    },
+                    "roleId": {
+                        "description": "ID do papel/profissão",
+                        "type": "string"
+                    },
+                    "roleName": {
+                        "description": "Nome do papel/profissão",
+                        "type": "string"
+                    },
+                    "lifePoints": {
+                        "description": "Pontos de vida",
+                        "type": "number"
+                    },
+                    "strenght": {
+                        "description": "Força",
+                        "type": "number"
+                    },
+                    "inteligence": {
+                        "description": "Inteligencia",
+                        "type": "number"
+                    },
+                    "dexterity": {
+                        "description": "Destreza",
+                        "type": "number"
+                    },
+                    "status": {
+                        "description": "status",
+                        "type": "string"
+                    },
+                    "attack": {
+                        "$ref": "#/components/schemas/FightModifier",
+                        "description": "Modificador de ataque"
+                    },
+                    "velocity": {
+                        "$ref": "#/components/schemas/FightModifier"
+                    }
+                },
+                "type": "object"
+            },
             "Error": {
                 "title": "Error",
                 "required": [
@@ -281,6 +330,24 @@
                     "message": {
                         "description": "Mensagem de erro",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "FightModifier": {
+                "title": "FightModifier",
+                "properties": {
+                    "strenghtPercent": {
+                        "description": "Percentual de força",
+                        "type": "number"
+                    },
+                    "inteligencePercent": {
+                        "description": "Percentual de inteligência",
+                        "type": "number"
+                    },
+                    "dexterityPercent": {
+                        "description": "Percentual de destreza",
+                        "type": "number"
                     }
                 },
                 "type": "object"
@@ -386,6 +453,105 @@
                     "userIdAction": {
                         "description": "ID do usuario que está executando uma ação",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateCharactersRequest": {
+                "title": "CreateCharactersRequest",
+                "required": [
+                    "name",
+                    "role"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nome",
+                        "type": "string"
+                    },
+                    "role": {
+                        "description": "ID da papel/profissão",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateFightRequest": {
+                "title": "CreateFightRequest",
+                "required": [
+                    "name",
+                    "role"
+                ],
+                "properties": {
+                    "character1": {
+                        "description": "ID do personagem 1",
+                        "type": "string"
+                    },
+                    "character2": {
+                        "description": "ID do personagem 2",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CharacterResponseLoadAll": {
+                "title": "CharacterResponseLoadAll",
+                "required": [
+                    "name",
+                    "id",
+                    "lifePoints",
+                    "strenght",
+                    "inteligence"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Nome",
+                        "type": "string"
+                    },
+                    "role": {
+                        "description": "Papel/Profissão",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "status",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateFightResponse": {
+                "title": "CreateFightResponse",
+                "properties": {
+                    "winnerId": {
+                        "description": "Id do personagem vencedor",
+                        "type": "string"
+                    },
+                    "winnerName": {
+                        "description": "Nome do personagem vencedor",
+                        "type": "string"
+                    },
+                    "winnerPoints": {
+                        "description": "Pontos restantes do personagem vencedor",
+                        "type": "number"
+                    },
+                    "loserId": {
+                        "description": "Id do personagem derrotado",
+                        "type": "string"
+                    },
+                    "loserName": {
+                        "description": "Nome do personagem derrotado",
+                        "type": "string"
+                    },
+                    "figthLogs": {
+                        "description": "Logs do combate",
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        }
                     }
                 },
                 "type": "object"

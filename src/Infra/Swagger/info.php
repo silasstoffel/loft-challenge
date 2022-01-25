@@ -6,9 +6,9 @@
 
 /**
  * @OA\Info(
- *      title="Empiricus - User API",
+ *      title="Loft - Game Challenge API",
  *      version="0.0.1",
- *      description="Documentação do micro serviço de usuários."
+ *      description="Documentação dos recursos da API."
  * )
  */
 
